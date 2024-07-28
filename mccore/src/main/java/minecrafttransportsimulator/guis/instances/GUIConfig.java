@@ -496,7 +496,6 @@ public class GUIConfig extends AGUIBase {
             radioVolumeDownButton.visible = true;
             radioVolumeDownButton.enabled = ConfigSystem.client.controlSettings.radioVolume.value > 0;
             radioVolumeLabel.text = LanguageSystem.GUI_CONFIG_CONTROLS_RADIOVOLUME.getCurrentValue() + ConfigSystem.client.controlSettings.radioVolume.value;
-            //FIXME make sure radio volume gets applies in interfaces for ports.
         } else {
             soundVolumeUpButton.visible = false;
             soundVolumeDownButton.visible = false;

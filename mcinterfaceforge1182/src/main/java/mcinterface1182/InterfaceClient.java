@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import minecrafttransportsimulator.baseclasses.Point3D;
-import minecrafttransportsimulator.entities.instances.EntityPlayerGun;
 import minecrafttransportsimulator.guis.components.AGUIBase;
 import minecrafttransportsimulator.mcinterface.AWrapperWorld;
 import minecrafttransportsimulator.mcinterface.IInterfaceClient;
@@ -233,7 +232,7 @@ public class InterfaceClient implements IInterfaceClient {
             if (world != null) {
                 if (event.phase.equals(Phase.START)) {
                     world.beginProfiling("MTS_ClientVehicleUpdates", true);
-                    world.tickAll();
+                    world.tickAll(true);
 
                     //Need to update world brightness since sky darken isn't calculated normally on clients.
                     ((WrapperWorld) world).world.updateSkyBrightness();
@@ -258,12 +257,7 @@ public class InterfaceClient implements IInterfaceClient {
                     	}
                     }
                 } else {
-                    //Update player guns.  These happen at the end since they need the player to update first.
-                    world.beginProfiling("MTS_PlayerGunUpdates", true);
-                    for (EntityPlayerGun gun : world.getEntitiesOfType(EntityPlayerGun.class)) {
-                        gun.update();
-                        gun.doPostUpdateLogic();
-                    }
+                    world.tickAll(false);
                     
                     //Handle camera requests.
                     if(cameraModeRequest != null) {
