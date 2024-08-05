@@ -976,6 +976,9 @@ public abstract class AEntityD_Definable<JSONDefinition extends AJSONMultiModelP
      */
     public final double getAnimatedVariableValue(DurationDelayClock clock, double scaleFactor, double offset, float partialTicks) {
         double value = getOrCreateVariable(clock.animation.variable).computeValue(partialTicks);
+        if (clock.animation.absolute && value < 0) {
+            value = -value;
+        }
         if (!clock.isUseful) {
             return clampAndScale(value, clock.animation, scaleFactor, offset);
         } else {
@@ -997,7 +1000,7 @@ public abstract class AEntityD_Definable<JSONDefinition extends AJSONMultiModelP
      */
     private static double clampAndScale(double value, JSONAnimationDefinition animation, double scaleFactor, double offset) {
         if (animation.axis != null) {
-            value = (animation.absolute ? Math.abs(value) : value) * scaleFactor + animation.offset + offset;
+            value = value * scaleFactor + animation.offset + offset;
             if (animation.clampMin != 0 && value < animation.clampMin) {
                 value = animation.clampMin;
             } else if (animation.clampMax != 0 && value > animation.clampMax) {
@@ -1005,7 +1008,7 @@ public abstract class AEntityD_Definable<JSONDefinition extends AJSONMultiModelP
             }
             return value;
         } else {
-            return (animation.absolute ? Math.abs(value) : value) * scaleFactor + animation.offset;
+            return value * scaleFactor + animation.offset;
         }
     }
 
